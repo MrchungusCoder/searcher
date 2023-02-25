@@ -1,38 +1,51 @@
 
 
 
-let productsjsonURL = `https://raw.githubusercontent.com/Bootcamp-Espol/FSD02/main/S03D03/clase/recursos/products.json`
-let productsxmlURL = `https://raw.githubusercontent.com/Bootcamp-Espol/FSD02/main/S03D03/clase/recursos/products.xml`
 
 
-let loadProducts = (myJSON, myXML) => {
 
-  fetch( myJSON,myXML )
-    .then((response) =>{
-        response.json()
-        
-    } )
-    .then(result => {
 
-      /* Callback por éxito: Procese el result */
-      console.log( result );
-    })
-    .catch(error => {
-      
-      /* Callback por fallo: Procese el error */
 
-      console.log( error );
 
-    });
+
+let loadProducts = () => {
+
   
+
+    fetch("https://raw.githubusercontent.com/Bootcamp-Espol/FSD02/main/S03D03/clase/recursos/products.json")
+      .then(response => response.json() ) /* Convierte el response a texto */
+      .then(result => {
+        
+        let element = document.querySelector("img.radius");
+
+
+
+
+      })
+      .catch(error => {
+        console.log( error );
+      });
+
+    fetch("https://raw.githubusercontent.com/Bootcamp-Espol/FSD02/main/S03D03/clase/recursos/products.xml")
+      .then(response => response.text() ) /* Convierte el response a texto */
+      .then(result => {
+
+        let xml = (new DOMParser()).parseFromString(result, 'application/xml');
+        console.log( xml );
+
+        let productsArr = xml.getElementsByTagName("name")
+
+        console.log(productsArr)
+      
+      })
+
+      .catch(error => {
+          console.log( error );
+      });
+
 }
 
-loadProducts(productsjsonURL, productsxmlURL);
-
-
-
-
-
+loadProducts();
 
 
 
