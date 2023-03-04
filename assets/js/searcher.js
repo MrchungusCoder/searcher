@@ -207,6 +207,20 @@ let filterProducts = () => {
           }
           else{
             card[index].classList.add("d-none");
+            window.addEventListener('load', function () {
+            button.addEventListener('click', () => {
+                style.innerHTML = `
+                #alert {
+                  padding: 16px 24px;
+                  display: block !important;
+                  position: fixed;
+                  bottom: 24px;
+                  right: 24px;
+                  border: 2px solid rgb(0, 126, 167);
+                  border-radius: 4px;
+                }`;;
+              });
+            });
           }
         })
       }
