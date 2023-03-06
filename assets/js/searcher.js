@@ -1,7 +1,8 @@
 
 
 
-
+let result = request("https://raw.githubusercontent.com/Bootcamp-Espol/Datos/main/products.xml")
+let result2 = request2("https://raw.githubusercontent.com/Bootcamp-Espol/Datos/main/products.json")
 
 
 
@@ -10,17 +11,74 @@
 //PRODUCTS LOAD
 
 let loadProducts = () => {
+  request(result)
+  request(result2)
+}
+
+
+  //XML
+function request(myUrl) {
+
+  
+  let contenedor2 = document.querySelector(".imgs_container");
+  let salida2 = ""
+
+    fetch(myUrl)
+      .then(response => response.text() ) 
+      .then(result => {
+
+          let xml = (new DOMParser()).parseFromString(result, 'application/xml');
+          
+          let productArr = xml.getElementsByTagName("product")
+          
+
+          for (let i = 0; i<productArr.length; i++){
+
+            let imgArr = productArr[i].getElementsByTagName("src")[0].textContent;
+            let typeArr = productArr[i].getElementsByTagName("type")[0].textContent;
+            let nameArr = productArr[i].getElementsByTagName("name")[0].textContent;
+            let priceArr = productArr[i].getElementsByTagName("price")[0].textContent;
+
+            salida2+=`
+            <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 mt-4 card_container">
+              <div class="card card-blog card-plain">
+                <div class="card-header p-0 mt-n4 mx-3">
+                  <a class="d-block shadow-xl border-radius-xl img_product">
+                    <img src="${imgArr}" alt="${nameArr}" class="img-fluid shadow border-radius-xl">
+                  </a>
+                </div>
+                <div class="card-body p-3">
+                  <p class="mb-0 text-sm text_type">${typeArr}</p>
+                  <a href="javascript:;">
+                    <h5>
+                    ${nameArr}
+                    </h5>
+                  </a>
+                  <p class="mb-4 text-sm">
+                    <b>Price: </b> $ ${priceArr}
+                  </p>
+                </div>
+              </div>
+            </div>
+            `;
+          }
+          contenedor2.innerHTML += salida2;
+
+        })
+
+      .catch(error => {
+        console.log( error );
+      });
+  }
 
   //JSON
-
-  let request2 = (myUrl) => {
-    fetch(myUrl)
+function request2 (myUrl2) {
+  let contenedor = document.querySelector(".imgs_container");
+  let salida = ``;
+    fetch(myUrl2)
     .then(response => response.json() ) 
     .then(result => {
-  
-      let contenedor = document.querySelector(".imgs_container");
-      let salida = ``;
-  
+
       result.forEach(item => {
         salida+=`
         <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 mt-4 card_container">
@@ -46,7 +104,7 @@ let loadProducts = () => {
         `;
       });
   
-      contenedor.innerHTML = salida;
+      contenedor.innerHTML += salida;
   
     })
   
@@ -54,68 +112,10 @@ let loadProducts = () => {
       console.log( error );
     });
   
-  }
-
-
-  //XML
-  let request = (myUrl) => {
-    fetch(myUrl)
-      .then(response => response.text() ) 
-      .then(result => {
-
-          let xml = (new DOMParser()).parseFromString(result, 'application/xml');
-          
-          let contenedor2 = document.querySelector(".imgs_container");
-          //let contenedor_3 = document.
-          let productArr = xml.getElementsByTagName("product")
-          let salida2 = ""
-
-          for (let i = 0; i<productArr.length; i++){
-
-            let imgArr = productArr[i].getElementsByTagName("src")[0].textContent;
-            let typeArr = productArr[i].getElementsByTagName("type")[0].textContent;
-            let nameArr = productArr[i].getElementsByTagName("name")[0].textContent;
-            let priceArr = productArr[i].getElementsByTagName("price")[0].textContent;
-
-            salida2+=`
-            <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 mt-4 card_container">
-              <div class="card card-blog card-plain">
-                <div class="card-header p-0 mt-n4 mx-3">
-                  <a class="d-block shadow-xl border-radius-xl img_product">
-                    <img src="${imgArr}" alt="${nameArr}" class="img-fluid shadow border-radius-xl">
-                  </a>
-                </div>
-                <div class="card-body p-3">
-                  <p class="mb-0 text-sm texto_type">${typeArr}</p>
-                  <a href="javascript:;">
-                    <h5>
-                    ${nameArr}
-                    </h5>
-                  </a>
-                  <p class="mb-4 text-sm">
-                    <b>Price: </b> $ ${priceArr}
-                  </p>
-                </div>
-              </div>
-            </div>
-            `;
-          }
-          contenedor2.innerHTML = salida2;
-
-        })
-
-      .catch(error => {
-        console.log( error );
-      });
-  }
-
-result = request("https://raw.githubusercontent.com/Bootcamp-Espol/Datos/main/products.xml")
-result2 = request2("https://raw.githubusercontent.com/Bootcamp-Espol/Datos/main/products.json")
-
-
-return result
-
 }
+
+
+
 
 loadProducts();
 
